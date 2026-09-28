@@ -222,7 +222,7 @@ This story lays the groundwork everything else builds on:
 		- https://github.com/ElucidBioimaging/EVServer/tree/ZEN-11307-qc-annotation-save-state-prototype
 	- Potentially relevant: `app/annotations/`, `Annotation` in `app/CAPgraph/models.py`, `qc-annotations-dialog`, `image-actions-toolbar-side`, `GetQcAnnotationVesselNames` in `vtkEvWebApplication.cxx`.
 
-**Acceptance Criteria**
+**Definition of Done**
 - No regressions when the config flag is off.
 - When the config flag is on, the button to launch the Annotations list modal appears and opens the modal on every step of the case building process. The button does not appear elsewhere in the application (such as Review mode). 
 	- Close works; Add New Annotation is shown but disabled.
@@ -291,7 +291,7 @@ This story delivers:
 	- Potentially relevant: `AnnotationErrorType` in `app/CAPgraph/models.py`, `RecordQcAnnotation` in `EVWorkItem.cpp`, `evDb::AddQcAnnotation`, `GetQcAnnotationVesselNames` and `GetQcAnnotationCurrentVessel` in `vtkEvWebApplication.cxx`, `create-qc-annotation-dialog`, `qc-annotation-image-controls`, `qc-annotation-flow.service.ts`.
 	- The prototype's `qc-annotation-error-type.ts` hardcodes the list this story serves from the API.
 
-**Acceptance Criteria**
+**Definition of Done**
 - When the config flag is on, an annotation can be created without images on every step of the case building process, and every permitted user sees it in the Annotations list with its created date/time, creator name and status Open.
 - In the Create New Annotation modal:
 	- Type of Error is required, and its options match SRS-1405 exactly for Coronary and for Carotid cases.
@@ -301,7 +301,8 @@ This story delivers:
 - Cancel in annotation mode, and Cancel or X in the modal, save nothing.
 - After Create, Cancel or X, the user is back on the step they were on, with the Annotations list closed.
 - Annotation mode can't be started while a case rejection or FFR rejection image flow is in progress, and vice versa.
-- Selecting frames, images, drawing, opening an annotation from the list, resolving and deleting don't need to work yet.
+- Opening an annotation from the Annotations list does not need to work yet.
+- Selecting frames, images, drawing, resolving and deleting also don't need to work yet.
 
 **Sub-tasks**
 
@@ -351,7 +352,7 @@ This story delivers:
 		- https://github.com/ElucidBioimaging/EVServer/tree/ZEN-11307-qc-annotation-save-state-prototype
 	- Potentially relevant: `AnnotationDetailView` and `AnnotationKeysetOrderingFilter` in `app/annotations/api/annotation_api.py`, `RestoreQcAnnotation` in `vtkEvWebApplication.cxx`, `qc-annotation-review-panel`, `qc-annotation-review.service.ts`, `work-item-analysis-review`.
 
-**Acceptance Criteria**
+**Definition of Done**
 - Selecting an annotation from the Annotations list closes the list and opens the review window over the leftmost viewer, including on Review Analysis, and moves the camera state, selected cross-section, and cursor to how they were when the annotation was saved.
 - The Resolve button on Annotation Review window stamps the resolver and date/time, and the Annotations list shows Resolved status. The Resolve button becomes an Unresolve button for the annotation after being pressed.
 - The Unresolve button clears the resolver and date/time, and the list shows Open status. The Unresolve button becomes a Resolve button after being pressed.
@@ -414,7 +415,7 @@ This story delivers:
 	- Prototype inherits the rejection flows' 240-minute screenshot age limit, this story needs to decide whether this is appropriate here too.
 		- Also need to check if developer-only hotkeys interact with modal correctly.
 
-**Acceptance Criteria**
+**Definition of Done**
 - In annotation mode, clicking views selects and deselects them with a clear indicator, and any capturable view can be chosen, including 3D and oblique.
 - Any number of frames can be selected, and they appear in the order they were selected.
 - The modal shows the selected frames on its left side, one at a time with arrows; they can't be rotated or panned, and they look exactly as they did in the case-building views.
@@ -469,7 +470,7 @@ This story delivers:
 		- sMPR/cMPR capture needed special-casing to keep strokes aligned (`EVScreenshot.cxx` TODO, cause unknown).
 		- A raw renderer back-reference caused a use-after-free on teardown.
 
-**Acceptance Criteria**
+**Definition of Done**
 - Pressing Lumen button allows user to draw over screenshots in green.
 - Pressing Wall button allows user to draw over screenshots in red.
 - Lumen and Wall buttons do not conflict. It is possible for neither to be selected, which disables drawing.
@@ -501,9 +502,8 @@ This story delivers:
 	- Scene capture and apply: segmentation region visibility, the vessel path index and window, and enough about the selected cross-section to find it again after edits (used by S7)
 	- Per-viewer capture and apply: camera and display settings for every active viewer, including sMPR/cMPR framing
 	- User work product (FFR captions, stenosis labels) is never captured or touched by a restore
-	- Annotations recorded before this story still restore what they hold; add migration to new schema if necessary
 
-**Out of scope.** Restore algorithm handling case where the vessel was edited, and restoring layout and buttons.
+**Out of scope.** Restore algorithm handling case where the vessel was edited, and restoring layout and buttons. Annotations created with the draft schema format established in S2 will not be supported.  
 
 **References.**
 - A reference `design.md`, including API & RPC definitions and sequence diagrams, can be found here: https://github.com/ElucidBioimaging/EVServer/blob/ZEN-11307-qc-annotation-save-state-prototype/arch/draft/qc_annotations/design.md
@@ -517,7 +517,7 @@ This story delivers:
 		- The sMPR/cMPR lumen-flow reformat was left short after restore: a stale encoded frame, likely caused by viewer visibility or `m_needsRender` gating in `StillRender`.
 		- The first save and restore on a work item failed; this was never root-caused.
 
-**Acceptance Criteria**
+**Definition of Done**
 - After navigating away (scroll, rotate, zoom, change cross-section or vessel), selecting an annotation, stepping to it, or pressing Reorient snaps all active views (3D, sMPR, cMPR, oblique, axial and any others on screen) at the same time to the captured position, orientation and configuration, including visibilities of lumen flow, region visibilities, and overlays.
 - sMPR and cMPR show the full captured length immediately, without clicking in the view.
 - The first restore in a freshly opened work item works as well as later ones.
@@ -558,7 +558,7 @@ This story delivers:
 		- https://github.com/ElucidBioimaging/EVServer/tree/ZEN-11307-qc-annotation-save-state-prototype
 	- Potentially relevant: `ResolveAnchor` and `OverlayQcSafeFields*` in `EVLinkedViewers.cpp`, `test_qcAnchorResolution.cpp`, `test_qcViewStateModeFiltering.cpp`.
 
-**Acceptance Criteria**
+**Definition of Done**
 - After the lumen or wall of the annotated vessel is edited, selecting the annotation lands on the nearest equivalent cross-section of the same vessel. If none is close enough, the cursor and cameras still restore, and the live selection is left alone.
 - If the annotated vessel target was deleted, the annotation never snaps onto a different vessel.
 - A restore never turns on a feature-gated display, such as FFR lumen flow, in a session where that feature is unavailable.
@@ -599,7 +599,7 @@ This story delivers:
 		- https://github.com/ElucidBioimaging/EVServer/tree/ZEN-11307-qc-annotation-save-state-prototype
 	- Potentially relevant: `delete-qc-annotation-dialog`, `AnnotationDetailView.delete` and `delete_annotation` in `app/annotations/`.
 
-**Acceptance Criteria**
+**Definition of Done**
 - Delete is offered only on the list rows of the user's own annotations, and requires confirmation.
 - The annotation and its images disappear for everyone.
 - Nobody else can delete it.
